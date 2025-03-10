@@ -14,6 +14,6 @@ class Servicio extends Model
     protected $fillable = ['nombre', 'descripcion', 'costo', 'duracion'];
 
     // Cambiamos los nombres de las columnas de fecha y hora por defecto
-    const CREATED_AT = 'fecha_creacion';
-    const UPDATED_AT = 'fecha_actualizacion';
+    //const CREATED_AT = 'fecha_creacion';
+    //const UPDATED_AT = 'fecha_actualizacion';
 }

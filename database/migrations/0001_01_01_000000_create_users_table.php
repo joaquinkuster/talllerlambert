@@ -12,17 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->id(); 
+            $table->string('nombre', 50); 
+            $table->string('apellido', 50); 
+            $table->string('dni', 8)->unique(); 
+            $table->string('telefono')->nullable(); // teléfono (opcional)
+            $table->enum('rol', ['Cliente', 'Administrador'])->default('Cliente'); 
+            $table->string('correo', 150)->unique(); 
+            $table->string('password', 255); 
+            //$table->timestamp('fecha_de_registro')->useCurrent(); 
+            $table->rememberToken(); // token para "recordar sesión"
+            $table->softDeletes(); // deleted_at para borrado lógico
+            $table->timestamps(); // created_at y updated_at
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
+            $table->string('correo')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
