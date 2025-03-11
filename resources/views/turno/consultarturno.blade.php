@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Vehículos</title>
+    <title>Reservar Turno</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -56,29 +56,17 @@
         /* Contenedor de botones en Acciones */
         .actions-container {
             display: flex;
-            flex-direction: row;
-            /* Botones en horizontal */
-            gap: 5px;
-            /* Espaciado entre botones */
-            width: 200px;
-            /* Aumentamos el ancho en un 10% (de 150px a 165px) */
-        }
-
-        /* Ajustar el ancho de la columna "Acciones" */
-        .table th:nth-child(6),
-        .table td:nth-child(6) {
-            width: 165px;
-            /* Aumentamos el ancho en un 10% (de 150px a 165px) */
+            flex-direction: row; /* Cambiamos a horizontal */
+            gap: 5px; /* Espaciado entre botones */
+            width: 190px; /* Ancho fijo para la columna */
         }
 
         /* Botones ocupando todo el ancho disponible */
         .actions-container button {
-            width: 100%;
+            flex: 1; /* Los botones ocupan el espacio disponible */
             margin: 2px 0;
-            font-size: 12px;
-            /* Tamaño de fuente más pequeño */
-            padding: 5px;
-            /* Padding reducido */
+            font-size: 12px; /* Tamaño de fuente más pequeño */
+            padding: 5px; /* Padding reducido */
         }
 
         .table-responsive {
@@ -93,14 +81,13 @@
         /* Ajustar el ancho de la columna "Acciones" */
         .table th:nth-child(6),
         .table td:nth-child(6) {
-            width: 120px;
-            /* Ancho fijo para la columna "Acciones" */
+            width: 150px; /* Ancho fijo para la columna "Acciones" */
         }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
+<nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -137,77 +124,56 @@
         </div>
     </nav>
 
-    <div class="container my-4">
+    <div class="container">
         <div class="card">
-            <h2 class="text-center mb-4">Mis vehículos</h2>
-
-            <!-- Filtros -->
-            <div class="row mb-3 align-items-center">
-                <div class="col-auto">
-                    <strong>Filtrar por:</strong>
-                </div>
-                <div class="col-md-2">
-                    <input type="text" class="form-control" placeholder="Marca...">
-                </div>
-                <div class="col-md-2">
-                    <input type="text" class="form-control" placeholder="Modelo...">
-                </div>
-                <div class="col-md-2">
-                    <select class="form-select">
-                        <option>Año</option>
-                        <option>2024</option>
-                        <option>2023</option>
-                        <option>2022</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <input type="text" class="form-control" placeholder="Patente...">
-                </div>
-                <div class="col-md-2">
-                    <select class="form-select">
-                        <option>Tipo</option>
-                        <option>Auto</option>
-                        <option>Moto</option>
-                    </select>
-                </div>
+            <h2 class="text-center mb-4">Turnos</h2>
+            <div class="row mb-3">
+                <div class="col-md-2"><strong>Filtrar por:</strong></div>
+                <div class="col-md-2"><select class="form-select"><option>Servicio</option></select></div>
+                <div class="col-md-2"><select class="form-select"><option>Vehículo</option></select></div>
+                <div class="col-md-2"><select class="form-select"><option>Fecha</option></select></div>
+                <div class="col-md-2"><select class="form-select"><option>Hora</option></select></div>
+                <div class="col-md-2"><select class="form-select"><option>Estado</option></select></div>
             </div>
-
-            <!-- Contenedor de la tabla con scroll -->
             <div class="table-responsive table-container">
                 <table class="table table-bordered text-center">
                     <thead class="table-light">
                         <tr>
-                            <th>Marca</th>
-                            <th>Modelo</th>
-                            <th>Año</th>
-                            <th>Patente</th>
-                            <th>Tipo</th>
+                            <th>Servicio solicitado</th>
+                            <th>Vehículo</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @for ($i = 0; $i < 15; $i++) {{-- Datos de prueba para ver el scroll --}}
-                            <tr>
-                            <td>Toyota</td>
-                            <td>Corolla</td>
-                            <td>2020</td>
-                            <td>ABC 123</td>
-                            <td>Auto</td>
+                        <tr>
+                            <td>Alineación de ejes</td>
+                            <td>Toyota Corolla 2020</td>
+                            <td>20/05/2025</td>
+                            <td>17:30</td>
+                            <td>Pendiente</td>
                             <td>
                                 <div class="actions-container">
-                                    <button class="btn btn-sm btn-dark">Modificar</button>
-                                    <button class="btn btn-sm btn-dark">Eliminar</button>
+                                    <button class="btn btn-dark btn-sm">Modificar</button>
+                                    <button class="btn btn-dark btn-sm">Cancelar</button>
                                 </div>
                             </td>
-                            </tr>
-                            @endfor
+                        </tr>
+                        <tr>
+                            <td>Balanceo de ruedas</td>
+                            <td>Toyota Corolla 2020</td>
+                            <td>21/05/2025</td>
+                            <td>09:00</td>
+                            <td>Cancelado</td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-
-            <!-- Botón para registrar nuevo vehículo -->
             <div class="text-end mt-3">
-                <button class="btn btn-dark w-25">Registrar vehículo</button>
+                <button class="btn btn-dark">Reservar turno</button>
             </div>
         </div>
     </div>
