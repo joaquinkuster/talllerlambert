@@ -61,4 +61,28 @@ class ServicioController extends Controller
     {
         //
     }
+
+    public function registrarservicio(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            // Lógica para guardar el vehículo en la base de datos
+            // Por ejemplo:
+            // Vehiculo::create($request->all());
+            return redirect()->route('servicio.altaservicio')->with('success', 'Servicio registrado correctamente');
+        }
+        
+        return view('servicio.altaservicio');
+    }
+
+    public function consultarservicio(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            // Lógica para guardar el vehículo en la base de datos
+            // Por ejemplo:
+            // Vehiculo::create($request->all());
+            return redirect()->route('servicio.consultarservicio')->with('success', 'Consultar servicio correctamente');
+        }
+        
+        return view('servicio.consultarservicio');
+    }
 }
