@@ -56,17 +56,29 @@
         /* Contenedor de botones en Acciones */
         .actions-container {
             display: flex;
-            flex-direction: row; /* Cambiamos a horizontal */
-            gap: 5px; /* Espaciado entre botones */
-            width: 190px; /* Ancho fijo para la columna */
+            flex-direction: row;
+            /* Botones en horizontal */
+            gap: 5px;
+            /* Espaciado entre botones */
+            width: 200px;
+            /* Aumentamos el ancho en un 10% (de 150px a 165px) */
+        }
+
+        /* Ajustar el ancho de la columna "Acciones" */
+        .table th:nth-child(6),
+        .table td:nth-child(6) {
+            width: 165px;
+            /* Aumentamos el ancho en un 10% (de 150px a 165px) */
         }
 
         /* Botones ocupando todo el ancho disponible */
         .actions-container button {
-            flex: 1; /* Los botones ocupan el espacio disponible */
+            width: 100%;
             margin: 2px 0;
-            font-size: 12px; /* Tamaño de fuente más pequeño */
-            padding: 5px; /* Padding reducido */
+            font-size: 12px;
+            /* Tamaño de fuente más pequeño */
+            padding: 5px;
+            /* Padding reducido */
         }
 
         .table-responsive {
@@ -81,7 +93,8 @@
         /* Ajustar el ancho de la columna "Acciones" */
         .table th:nth-child(6),
         .table td:nth-child(6) {
-            width: 150px; /* Ancho fijo para la columna "Acciones" */
+            width: 120px;
+            /* Ancho fijo para la columna "Acciones" */
         }
     </style>
 </head>
