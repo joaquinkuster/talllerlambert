@@ -48,4 +48,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Método para representar el objeto como string
+    public function __toString()
+    {
+        return "{$this->nombre} {$this->apellido}";
+    }
 }

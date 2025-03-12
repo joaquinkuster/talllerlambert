@@ -6,17 +6,23 @@ use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\TurnoController;
 use App\Http\Controllers\VehiculoController;
 
+Route::get('/', [ServicioController::class, 'index'])->name('servicios');
+
 // Rutas relacionadas con AutenticacionController
-Route::controller(AutenticacionController::class)->group(function () {
-    Route::get('registro', 'registro')->name('registro');
-    Route::post('registro', 'registrar')->name('registro.registrar');
-    Route::get('login', 'login')->name('login');
-    Route::post('login', 'acceder')->name('login.acceder');
+Route::middleware('guest')->group(function () {
+    Route::controller(AutenticacionController::class)->group(function () {
+        Route::get('registro', 'registro')->name('registro');
+        Route::post('registro', 'registrar')->name('registro.registrar');
+        Route::get('login', 'login')->name('login');
+        Route::post('login', 'acceder')->name('login.acceder');
+    });
 });
 
 Route::middleware('auth')->group(function() {
+    Route::get('logout', [AutenticacionController::class, 'logout'])->name('logout');
     Route::controller(ServicioController::class)->prefix('servicios')->group(function() {
-        Route::get('', 'index')->name('servicios');
+        Route::get('registrar', 'registrar')->name('servicios.registrar');
+        Route::post('registrar', 'registrar')->name('servicios.registrar');
     });
 });
 

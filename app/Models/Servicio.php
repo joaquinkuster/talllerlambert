@@ -11,9 +11,16 @@ class Servicio extends Model
     use HasFactory, SoftDeletes;
 
     // Especificamos los campos que se pueden asignar masivamente
-    protected $fillable = ['nombre', 'descripcion', 'costo', 'duracion'];
+    protected $fillable = [
+        'nombre',
+        'descripcion',
+        'costo',
+        'duracion'
+    ];
 
-    // Cambiamos los nombres de las columnas de fecha y hora por defecto
-    //const CREATED_AT = 'fecha_creacion';
-    //const UPDATED_AT = 'fecha_actualizacion';
+    // Método para representar el objeto como string
+    public function __toString()
+    {
+        return sprintf("%s - $%s - %d min", $this->nombre, number_format($this->costo, 2, ',', '.'), $this->duracion);
+    }
 }

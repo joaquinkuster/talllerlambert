@@ -69,7 +69,7 @@ class AutenticacionController extends Controller
         ]);
 
         // Redirigir al login con un mensaje de éxito
-        return redirect()->route('login')->with('msj', 'Cuenta creada exitosamente.');
+        return redirect()->route('login')->with('msj', 'Se creó la cuenta exitosamente.');
     }
 
     public function login()
@@ -99,6 +99,21 @@ class AutenticacionController extends Controller
         // Regenerar la sesión para mayor seguridad
         $req->session()->regenerate();
 
-        //return redirect()->route('dashboard');
+        // Redirigir al index de servicios
+        return redirect()->route('servicios')->with('msj', 'Se inició sesión exitosamente.');
+    }
+
+    public function logout(Request $request)
+    {
+        // Cerrar la sesión del usuario autenticado
+        // Especificar el guard que maneja la autenticación y almacena la información del usuario, 
+        // ya sea mediante sesiones (web) o tokens (API).
+        Auth::guard('web')->logout();
+  
+        // Invalida la sesión actual para seguridad
+        $request->session()->invalidate();
+  
+        // Redirigir al index de servicios
+        return redirect()->route('login')->with('msj', 'Se cerró la sesión exitosamente.');
     }
 }

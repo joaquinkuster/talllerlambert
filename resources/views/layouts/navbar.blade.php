@@ -8,7 +8,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto me-3">
                 <li class="nav-item me-3">
-                    <a class="nav-link" href="#">Servicios</a>
+                    <a class="nav-link  {{ request()->routeIs('servicios') ? 'active' : '' }}" href="{{ route('servicios') }}">Servicios</a>
                 </li>
                 <li class="nav-item me-3">
                     <a class="nav-link" href="#">Nosotros</a>
@@ -19,17 +19,42 @@
                 <li class="nav-item me-3">
                     <a class="nav-link" href="#">Contacto</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                            alt="Profile" class="rounded-circle" width="30" height="30">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Perfil</a></li>
-                        <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
-                    </ul>
-                </li>
+                @if (auth()->check())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                                alt="Profile" class="rounded-circle" width="30" height="30">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <p class="mb-0">{{ auth()->user() }}</p>
+                                    <p class="text-muted small mb-0">{{ auth()->user()->rol }}</p>
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item btnLogout" pag-redirect="/logout">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                    <!-- Links para el menu responsive -->
+                    <li class="nav-item perfil d-none me-3">
+                        <a class="nav-link" href="#">Modificar perfil</a>
+                    </li>
+                    <li class="nav-item logout d-none me-3">
+                        <a class="nav-link btnLogout" pag-redirect="/logout">Cerrar sesión</a>
+                    </li>
+                @else
+                    <li class="nav-item me-3">
+                        <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link {{ request()->routeIs('registro') ? 'active' : '' }}" href="{{ route('registro') }}">Registrarse</a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

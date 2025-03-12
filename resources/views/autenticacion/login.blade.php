@@ -3,7 +3,7 @@
 @section('titulo', 'Inicio de sesión')
 
 @section('contenido')
-    <div class="login-container bg-white rounded shadow p-5 mx-auto d-flex">
+    <div class="login-container bg-white rounded shadow p-5 d-flex">
         <div class="d-flex justify-content-around align-items-center w-100">
             <div class="formulario-izquierda w-50 px-5 d-flex flex-column">
                 <h2 class="text-center mb-4">Bienvenido</h2>
@@ -16,8 +16,9 @@
                         </div>
                     @enderror
                     @if (session('msj'))
-                        <div class="alert alert-success">
+                        <div class="alert alert-success alert-dismissible fade show">
                             {{ session('msj') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
                     <div class="mb-3">

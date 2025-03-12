@@ -1,19 +1,48 @@
-$(document).ready(function() {
+$(document).ready(function () {
+    // Botón de mostrar/ocultar contraseña
+    const togglePassword = $('#togglePassword');
+    const togglePasswordConfirm = $('#togglePasswordConfirm');
+    function mostrarOcultarPassword(input, toggle) {
+        const tipo = input.getAttribute('type') === 'password' ? 'text' : 'password';
+        input.setAttribute('type', tipo);
+        toggle.classList.toggle('fa-eye');
+        toggle.classList.toggle('fa-eye-slash');
+    }
+    if (togglePassword.length) {
+        togglePassword.on('click', function (e) {
+            e.preventDefault();
+            const input = document.getElementById('password');
+            mostrarOcultarPassword(input, this);
+        });
+    }
+    if (togglePasswordConfirm.length) {
+        togglePasswordConfirm.on('click', function (e) {
+            e.preventDefault();
+            const input = document.getElementById('password_confirmation');
+            mostrarOcultarPassword(input, this);
+        });
+    }
 
-    document.getElementById('togglePassword').addEventListener('click', function() {
-        const passwordInput = document.getElementById('password');
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.classList.toggle('fa-eye');
-        this.classList.toggle('fa-eye-slash');
-    });
-
-    document.getElementById('togglePasswordConfirm').addEventListener('click', function() {
-        const passwordInput = document.getElementById('password_confirmation');
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.classList.toggle('fa-eye');
-        this.classList.toggle('fa-eye-slash');
-    });
-
+    // Configuración de la acción de logout con confirmación
+    const btnLogout = $(".btnLogout");
+    if (btnLogout.length) {
+        btnLogout.on("click", function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Vas a cerrar tu sesión actual.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, cerrar sesión",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirige al enlace de cierre de sesión
+                    window.location.href = $(this).attr('pag-redirect');
+                }
+            });
+        });
+    }
 });
