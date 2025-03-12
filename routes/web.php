@@ -5,10 +5,19 @@ use App\Http\Controllers\AutenticacionController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\TurnoController;
 use App\Http\Controllers\VehiculoController;
+
 // Rutas relacionadas con AutenticacionController
 Route::controller(AutenticacionController::class)->group(function () {
     Route::get('registro', 'registro')->name('registro');
-    Route::post('registro', 'registrarCuenta')->name('registro.registrar');
+    Route::post('registro', 'registrar')->name('registro.registrar');
+    Route::get('login', 'login')->name('login');
+    Route::post('login', 'acceder')->name('login.acceder');
+});
+
+Route::middleware('auth')->group(function() {
+    Route::controller(ServicioController::class)->prefix('servicios')->group(function() {
+        Route::get('', 'index')->name('servicios');
+    });
 });
 
 Route::get('/vehiculo/registrar', [VehiculoController::class, 'registrarvehiculo'])->name('vehiculo.altavehiculo');
