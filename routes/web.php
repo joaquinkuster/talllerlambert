@@ -18,31 +18,26 @@ Route::middleware('guest')->group(function () {
     });
 });
 
-Route::middleware('auth')->group(function() {
+Route::middleware('auth')->group(function () {
     Route::get('logout', [AutenticacionController::class, 'logout'])->name('logout');
-    Route::controller(ServicioController::class)->prefix('servicios')->group(function() {
+
+    Route::controller(ServicioController::class)->prefix('servicios')->group(function () {
         Route::get('registrar', 'registrar')->name('servicios.registrar');
         Route::post('registrar', 'registrar')->name('servicios.registrar');
+        Route::get('modificar/{id}', 'modificar')->name('servicios.modificar');
+        Route::put('modificar/{id}', 'modificar')->name('servicios.modificar');
+        Route::delete('eliminar/{id}', 'eliminar')->name('servicios.eliminar');
+    });
+
+    Route::controller(VehiculoController::class)->prefix('vehiculos')->group(function () {
+        Route::get('', 'index')->name('vehiculos');
+        Route::get('registrar', 'registrar')->name('vehiculos.registrar');
+        Route::post('registrar', 'registrar')->name('vehiculos.registrar');
+        Route::get('modificar/{id}', 'modificar')->name('vehiculos.modificar');
+        Route::put('modificar/{id}', 'modificar')->name('vehiculos.modificar');
+        Route::delete('eliminar/{id}', 'eliminar')->name('vehiculos.eliminar');
     });
 });
-
-Route::get('/vehiculo/registrar', [VehiculoController::class, 'registrarvehiculo'])->name('vehiculo.altavehiculo');
-Route::post('/vehiculo/registrar', [VehiculoController::class, 'registrarvehiculo'])->name('vehiculo.altavehiculo');
-
-Route::get('/vehiculo/mis-vehiculos', [VehiculoController::class, 'consultarvehiculo'])->name('vehiculo.consultarvehiculo');
-Route::post('/vehiculo/mis-vehiculos', [VehiculoController::class, 'consultarvehiculo'])->name('vehiculo.consultarvehiculo');
-
-Route::get('/vehiculo/registrar', [VehiculoController::class, 'registrarvehiculo'])->name('vehiculo.altavehiculo');
-Route::post('/vehiculo/registrar', [VehiculoController::class, 'registrarvehiculo'])->name('vehiculo.altavehiculo');
-
-Route::get('/vehiculo/mis-vehiculos', [VehiculoController::class, 'consultarvehiculo'])->name('vehiculo.consultarvehiculo');
-Route::post('/vehiculo/mis-vehiculos', [VehiculoController::class, 'consultarvehiculo'])->name('vehiculo.consultarvehiculo');
-
-Route::get('/servicio/registrar', [ServicioController::class, 'registrarservicio'])->name('servicio.altaservicio');
-Route::post('/servicio/registrar', [ServicioController::class, 'registrarservicio'])->name('servicio.altaservicio');
-
-Route::get('/servicio/mis-servicios', [ServicioController::class, 'consultarservicio'])->name('servicio.consultarservicio');
-Route::post('/servicio/mis-servicios', [ServicioController::class, 'consultarservicio'])->name('servicio.consultarservicio');
 
 Route::get('/turno/registrar', [TurnoController::class, 'registrarturno'])->name('turno.altaturno');
 Route::post('/turno/registrar', [TurnoController::class, 'registrarturno'])->name('turno.altaturno');

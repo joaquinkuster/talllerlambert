@@ -1,27 +1,34 @@
 @extends('layouts.app')
 
-@section('titulo', 'Registrar servicio')
+@section('titulo', 'Registrar vehículo')
 
 @section('contenido')
     <div class="registro-container bg-white rounded shadow p-5 mx-auto">
-        <h2 class="text-center mb-4">Dar de alta servicio</h2>
-        <form action="{{ route('servicios.registrar') }}" method="post">
+        <h2 class="text-center mb-4">Dar de alta vehículo</h2>
+        <form action="{{ route('vehiculos.registrar') }}" method="post">
             @csrf
-            <!-- Fila 1: Nombre del Servicio -->
             <div class="row mb-3">
-                <div class="col-12">
-                    <label for="nombre" class="form-label">Nombre:</label>
-                    <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre"
-                        name="nombre" placeholder="Nombre" value="{{ old('nombre') }}">
-                    @error('nombre')
+                <div class="col">
+                    <label for="marca" class="form-label">Marca:</label>
+                    <input type="text" class="form-control @error('marca') is-invalid @enderror" id="marca"
+                        name="marca" placeholder="Marca" value="{{ old('marca') }}">
+                    @error('marca')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="col">
+                    <label for="modelo" class="form-label">Modelo:</label>
+                    <input type="text" class="form-control @error('modelo') is-invalid @enderror" id="modelo"
+                        name="modelo" placeholder="Modelo" value="{{ old('modelo') }}">
+                    @error('modelo')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                     @enderror
                 </div>
             </div>
-
-            <!-- Fila 2: Duración y Costo -->
             <div class="row mb-3">
                 <div class="col">
                     <label for="duracion" class="form-label">Duración

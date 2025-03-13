@@ -20,7 +20,6 @@ return new class extends Migration
             $table->enum('rol', ['Cliente', 'Administrador'])->default('Cliente'); 
             $table->string('correo', 150)->unique(); 
             $table->string('password', 255); 
-            //$table->timestamp('fecha_de_registro')->useCurrent(); 
             $table->rememberToken(); // token para "recordar sesión"
             $table->softDeletes(); // deleted_at para borrado lógico
             $table->timestamps(); // created_at y updated_at

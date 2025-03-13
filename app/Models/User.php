@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Vehiculo;
 
 class User extends Authenticatable
 {
@@ -49,9 +50,15 @@ class User extends Authenticatable
         ];
     }
 
+    // Relación con vehiculos
+    public function vehiculos()
+    {
+        return $this->hasMany(Vehiculo::class);
+    }
+
     // Método para representar el objeto como string
     public function __toString()
     {
-        return "{$this->nombre} {$this->apellido}";
+        return substr(sprintf('%s %s', $this->nombre, $this->apellido), 0, 15);
     }
 }

@@ -45,4 +45,27 @@ $(document).ready(function () {
             });
         });
     }
+
+    // Configuración de la acción de eliminar con confirmación
+    const btnEliminar = $(".btnEliminar");
+    const formEliminar = $(".formEliminar");
+    if (btnEliminar.length && formEliminar.length) {
+        btnEliminar.on("click", function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    formEliminar.submit(); // Envía el formulario manualmente si el usuario confirma
+                }
+            });
+        });
+    }
 });

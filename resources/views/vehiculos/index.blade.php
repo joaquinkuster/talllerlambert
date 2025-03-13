@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Sevicios')
+@section('titulo', 'Mis vehiculos')
 
 @section('contenido')
     <div class="index-container bg-white rounded shadow p-5">
@@ -12,7 +12,7 @@
             </div>
         @endif
 
-        <h2 class="text-center mb-4">Servicios</h2>
+        <h2 class="text-center mb-4">Mis vehiculos</h2>
 
         <!-- Filtros -->
         <div class="row mb-4 align-items-center gx-3 gy-3">
@@ -20,43 +20,56 @@
                 <strong>Filtrar por:</strong>
             </div>
             <div class="col-md col-12">
-                <input type="text" class="form-control" placeholder="Nombre...">
+                <input type="text" class="form-control" placeholder="Marca...">
             </div>
             <div class="col-md col-12">
-                <input type="text" class="form-control" placeholder="Descripción...">
+                <input type="text" class="form-control" placeholder="Modelo...">
             </div>
             <div class="col-md col-12">
-                <input type="text" class="form-control" placeholder="Costo...">
+                <select class="form-select" placeholder="Año...">
+                    <option>2024</option>
+                    <option>2023</option>
+                    <option>2022</option>
+                </select>
             </div>
             <div class="col-md col-12">
-                <input type="text" class="form-control" placeholder="Duración...">
+                <input type="text" class="form-control" placeholder="Patente...">
+            </div>
+            <div class="col-md col-12">
+                <select class="form-select">
+                    <option>Tipo</option>
+                    <option>Auto</option>
+                    <option>Moto</option>
+                </select>
             </div>
         </div>
 
         <!-- Contenedor de la tabla con scroll -->
-        @if ($servicios->count() > 0)
+        @if ($vehiculos->count() > 0)
             <div class="table-responsive tabla-container">
                 <table class="table table-bordered table-striped table-hover text-center rounded shadow-sm">
                     <thead class="table-light">
                         <tr>
-                            <th class="text-center">Nombre</th>
-                            <th class="text-center">Descripción</th>
-                            <th class="text-center">Costo (en ARS)</th>
-                            <th class="text-center">Duración (min)</th>
+                            <th class="text-center">Marca</th>
+                            <th class="text-center">Modelo</th>
+                            <th class="text-center">Año</th>
+                            <th class="text-center">Patente</th>
+                            <th class="text-center">Tipo</th>
                             <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($servicios as $servicio)
+                        @foreach ($vehiculos as $vehiculo)
                             <tr>
-                                <td class="align-middle">{{ $servicio->nombre }}</td>
-                                <td class="align-middle">{{ $servicio->descripcion }}</td>
-                                <td class="align-middle">${{ $servicio->costo }}</td>
-                                <td class="align-middle">{{ $servicio->duracion }}</td>
+                                <td class="align-middle">{{ $vehiculo->marca }}</td>
+                                <td class="align-middle">{{ $vehiculo->modelo }}</td>
+                                <td class="align-middle">{{ $vehiculo->anio }}</td>
+                                <td class="align-middle">{{ $vehiculo->patente }}</td>
+                                <td class="align-middle">{{ $vehiculo->tipo }}</td>
                                 <td class="align-middle">
-                                    <a href="{{ route('servicios.modificar', $servicio->id) }}"
+                                    <a href="{{ route('vehiculos.modificar', $vehiculo->id) }}"
                                         class="btn btn-warning btn-sm">Modificar</a>
-                                    <form action="{{ route('servicios.eliminar', $servicio->id) }}" method="POST"
+                                    <form action="{{ route('vehiculos.eliminar', $vehiculo->id) }}" method="POST"
                                         class="d-inline formEliminar">
                                         @csrf
                                         @method('DELETE')
@@ -71,12 +84,12 @@
             </div>
         @else
             <div class="alert alert-info mt-5 text-center" role="alert">
-                <p class="text-muted fs-5">No hay servicios registrados actualmente.</p>
+                <p class="text-muted fs-5">No tienes vehiculos registrados actualmente.</p>
             </div>
         @endif
 
         <div class="d-flex justify-content-end mt-3">
-            <a class="btn btn-dark px-5" href="{{ route('servicios.registrar') }}">Registrar servicio</a>
+            <a class="btn btn-dark px-5" href="{{ route('vehiculos.registrar') }}">Registrar vehículo</a>
         </div>
     </div>
 @endsection
