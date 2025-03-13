@@ -36,11 +36,19 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item {{ request()->routeIs('vehiculos') ? 'active' : '' }}" href="{{ route('vehiculos') }}">Mis vehiculos</a></li>
+                            <li><a class="dropdown-item" href="#">Ver turnos</a></li>
+                            <li><a class="dropdown-item" href="#">Modificar perfil</a></li>
                             <li><a class="dropdown-item btnLogout" pag-redirect="/logout">Cerrar sesión</a></li>
                         </ul>
                     </li>
                     <!-- Links para el menu responsive -->
+                    <li class="nav-item vehiculos d-none me-3">
+                        <a class="nav-link {{ request()->routeIs('vehiculos') ? 'active' : '' }}" href="{{ route('vehiculos') }}">Mis vehiculos</a>
+                    </li>
+                    <li class="nav-item turnos d-none me-3">
+                        <a class="nav-link" href="#">Ver turnos</a>
+                    </li>
                     <li class="nav-item perfil d-none me-3">
                         <a class="nav-link" href="#">Modificar perfil</a>
                     </li>

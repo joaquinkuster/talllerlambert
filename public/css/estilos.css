@@ -37,6 +37,8 @@ body {
 }
 
 @media (max-width: 991.9px) {
+    .navbar-nav .nav-item.vehiculos,
+    .navbar-nav .nav-item.turnos,
     .navbar-nav .nav-item.perfil,
     .navbar-nav .nav-item.logout{
         display: block !important;

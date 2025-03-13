@@ -31,23 +31,26 @@
             </div>
             <div class="row mb-3">
                 <div class="col">
-                    <label for="duracion" class="form-label">Duración
-                        (minutos):</label>
-                    <input type="number" step="0" min="1"
-                        class="form-control @error('duracion') is-invalid @enderror" id="duracion" name="duracion"
-                        placeholder="Duración" value="{{ old('duracion') }}">
-                    @error('duracion')
+                    <label for="anio" class="form-label">Año:</label>
+                    <select id="anio" name="anio" class="form-select @error('anio') is-invalid @enderror">
+                        <option value="">Seleccione un año</option>
+                        @for ($i = 1900; $i <= date('Y'); $i++)
+                            <option value="{{ $i }}" {{ old('anio') == $i ? 'selected' : '' }}>
+                                {{ $i }}
+                            </option>
+                        @endfor
+                    </select>
+                    @error('anio')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                     @enderror
                 </div>
                 <div class="col">
-                    <label for="costo" class="form-label">Costo:</label>
-                    <input type="number" step="0.01" min="0"
-                        class="form-control @error('costo') is-invalid @enderror" id="costo" name="costo"
-                        placeholder="Costo" value="{{ old('costo') }}">
-                    @error('costo')
+                    <label for="patente" class="form-label">Patente:</label>
+                    <input type="text" class="form-control @error('patente') is-invalid @enderror" id="patente"
+                        name="patente" placeholder="Patente" value="{{ old('patente') }}">
+                    @error('patente')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -58,10 +61,13 @@
             <!-- Fila 3: Descripción -->
             <div class="row mb-3">
                 <div class="col">
-                    <label for="descripcion" class="form-label">Descripción:</label>
-                    <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion"
-                        rows="3" placeholder="Descripción">{{ old('descripcion') }}</textarea>
-                    @error('descripcion')
+                    <label for="tipo" class="form-label">Tipo:</label>
+                    <select id="tipo" name="tipo" class="form-select @error('tipo') is-invalid @enderror">
+                        <option value="">Seleccione un tipo</option>
+                        <option value="Auto" {{ old('tipo') == 'Auto' ? 'selected' : '' }}>Auto</option>
+                        <option value="Moto" {{ old('tipo') == 'Moto' ? 'selected' : '' }}>Moto</option>
+                    </select>
+                    @error('tipo')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
