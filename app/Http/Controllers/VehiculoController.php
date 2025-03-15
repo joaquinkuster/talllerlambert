@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\RegexHelper;
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -68,9 +68,9 @@ class VehiculoController extends Controller
     private function validarVehiculo(Request $req)
     {
         return $req->validate([
-            'marca' => 'required|string|max:50|regex:' . RegexHelper::TEXTO_SIMPLE,
+            'marca' => 'required|string|max:50|regex:' . Helper::REGEX_TEXTO,
             'modelo' => 'required|string|max:50',
-            'patente' => ['required', 'string', 'min:6', 'max:7', 'unique:vehiculos,patente', 'regex:' . RegexHelper::PATENTE],
+            'patente' => ['required', 'string', 'min:6', 'max:7', 'unique:vehiculos,patente', 'regex:' . Helper::REGEX_PATENTE],
             'anio' => 'required|integer|min:1900|max:' . date('Y'),
             'tipo' => 'required|in:Auto,Moto',
         ], [

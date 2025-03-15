@@ -70,10 +70,10 @@
                                     <a href="{{ route('vehiculos.modificar', $vehiculo->id) }}"
                                         class="btn btn-warning btn-sm">Modificar</a>
                                     <form action="{{ route('vehiculos.eliminar', $vehiculo->id) }}" method="POST"
-                                        class="d-inline formEliminar">
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm btnEliminar">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger btn-sm btnConfirmar">Eliminar</button>
                                     </form>
                                 </td>
                             </tr>

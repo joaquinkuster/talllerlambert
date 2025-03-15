@@ -25,6 +25,10 @@ body {
     border: 1px solid #dee2e6; /* Borde para el contenedor */
 }
 
+.select2{
+    width: 100% !important;
+}
+
 @media (max-width: 1200px) {
     .logo-derecha {
         display: none !important;

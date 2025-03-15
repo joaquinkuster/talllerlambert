@@ -18,9 +18,15 @@ class Servicio extends Model
         'duracion'
     ];
 
+     // Relación muchos a muchos con Turno
+     public function turnos()
+     {
+         return $this->belongsToMany(Turno::class, 'servicio_turno');
+     }
+
     // Método para representar el objeto como string
     public function __toString()
     {
-        return substr(sprintf("%s - $%s - %d min", $this->nombre, number_format($this->costo, 2, ',', '.'), $this->duracion), 0, 15);
+        return sprintf("%s - $%s - %d min", $this->nombre, number_format($this->costo, 2, ',', '.'), $this->duracion);
     }
 }

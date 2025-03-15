@@ -1,0 +1,84 @@
+@extends('layouts.app')
+
+@section('titulo', 'Reservar turno')
+
+@push('estilos')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+@endpush
+
+@section('contenido')
+    <div class="registro-container bg-white rounded shadow p-5 mx-auto">
+        <h2 class="text-center mb-4">Reservar turno</h2>
+        <form action="{{ route('turnos.reservar') }}" method="post">
+            @csrf
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="servicio" class="form-label">Servicios:</label>
+                    <input type="hidden" id="data-horarios" data-url="{{ route('turnos.actualizarHorarios') }}"
+                        data-token="{{ csrf_token() }}">
+                    <select name="servicios[]" id="selectMultiple"
+                        class="form-select @error('servicios') is-invalid @enderror" multiple>
+                        @foreach ($servicios as $servicio)
+                            <option value="{{ $servicio->id }}"
+                                {{ in_array($servicio->id, old('servicios', [])) ? 'selected' : '' }}>{{ $servicio }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('servicios')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="vehiculo_id" class="form-label">Vehículo:</label>
+                    <select name="vehiculo_id" id="vehiculo"
+                        class="form-select @error('vehiculo_id') is-invalid @enderror">
+                        <option value="">Seleccione un vehículo</option>
+                        @foreach ($vehiculos as $vehiculo)
+                            <option value="{{ $vehiculo->id }}" {{ old('vehiculo_id') == $vehiculo->id ? 'selected' : '' }}>
+                                {{ $vehiculo }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('vehiculo_id')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="fechaHora" class="form-label">Fecha y hora:</label>
+                    <select id="fechaHora" name="fechaHora" class="form-select @error('fechaHora') is-invalid @enderror">
+                        @php
+                            $horariosDisponibles = old('horariosDisponibles', $horariosDisponibles ?? []);
+                        @endphp
+                        @if (count($horariosDisponibles) > 0)
+                        <option value="">Seleccione una fecha y hora</option>
+                        @foreach ($horariosDisponibles as $horario)
+                            <option value="{{ $horario }}" {{ old('fechaHora') == $horario ? 'selected' : '' }}>
+                                {{ $horario }}</option>
+                        @endforeach
+                    @else
+                        <option value="">No hay horarios disponibles para mostrar.</option>
+                        @endif
+                    </select>
+                    @error('fechaHora')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+            <button type="submit" class="btn btn-dark w-100">Reservar</button>
+        </form>
+    </div>
+@endsection
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+@endpush

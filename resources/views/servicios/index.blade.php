@@ -12,6 +12,13 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <h2 class="text-center mb-4">Servicios</h2>
 
         <!-- Filtros -->
@@ -57,10 +64,10 @@
                                     <a href="{{ route('servicios.modificar', $servicio->id) }}"
                                         class="btn btn-warning btn-sm">Modificar</a>
                                     <form action="{{ route('servicios.eliminar', $servicio->id) }}" method="POST"
-                                        class="d-inline formEliminar">
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm btnEliminar">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger btn-sm btnConfirmar">Eliminar</button>
                                     </form>
                                 </td>
                             </tr>

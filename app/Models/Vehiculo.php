@@ -20,15 +20,21 @@ class Vehiculo extends Model
         'user_id'
     ];
 
-    // Relación con usuario
+    // Relación muchos a uno con Usuario
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    // Relación uno a muchos con Turno
+    public function turnos()
+    {
+        return $this->hasMany(Turno::class);
+    }
+
     // Método para representar el objeto como string
     public function __toString()
     {
-        return substr(sprintf("%s - %s %d %s", $this->marca, $this->modelo, $this->anio, $this->patente), 0, 15);
+        return sprintf("%s - %s %d %s", $this->marca, $this->modelo, $this->anio, $this->patente);
     }
 }

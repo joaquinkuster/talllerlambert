@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Logo</a>
+        <a class="navbar-brand" href="{{ route('servicios') }}">Logo</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -28,8 +28,8 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="#">
-                                    <p class="mb-0">{{ auth()->user() }}</p>
+                                <a class="dropdown-item" href="{{ route('modificar.perfil') }}">
+                                    <p class="mb-0">{{ Str::limit(auth()->user(), 15) }}</p>
                                     <p class="text-muted small mb-0">{{ auth()->user()->rol }}</p>
                                 </a>
                             </li>
@@ -37,8 +37,8 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item {{ request()->routeIs('vehiculos') ? 'active' : '' }}" href="{{ route('vehiculos') }}">Mis vehiculos</a></li>
-                            <li><a class="dropdown-item" href="#">Ver turnos</a></li>
-                            <li><a class="dropdown-item" href="#">Modificar perfil</a></li>
+                            <li><a class="dropdown-item {{ request()->routeIs('turnos') ? 'active' : '' }}" href="{{ route('turnos') }}">Ver turnos</a></li>
+                            <li><a class="dropdown-item {{ request()->routeIs('modificar.perfil') ? 'active' : '' }}" href="{{ route('modificar.perfil') }}">Modificar perfil</a></li>
                             <li><a class="dropdown-item btnLogout" pag-redirect="/logout">Cerrar sesión</a></li>
                         </ul>
                     </li>
@@ -47,10 +47,10 @@
                         <a class="nav-link {{ request()->routeIs('vehiculos') ? 'active' : '' }}" href="{{ route('vehiculos') }}">Mis vehiculos</a>
                     </li>
                     <li class="nav-item turnos d-none me-3">
-                        <a class="nav-link" href="#">Ver turnos</a>
+                        <a class="nav-link {{ request()->routeIs(patterns: 'turnos') ? 'active' : '' }}" href="{{ route('turnos') }}">Ver turnos</a>
                     </li>
                     <li class="nav-item perfil d-none me-3">
-                        <a class="nav-link" href="#">Modificar perfil</a>
+                        <a class="nav-link {{ request()->routeIs(patterns: 'modificar.perfil') ? 'active' : '' }}" href="{{ route('modificar.perfil') }}">Modificar perfil</a>
                     </li>
                     <li class="nav-item logout d-none me-3">
                         <a class="nav-link btnLogout" pag-redirect="/logout">Cerrar sesión</a>

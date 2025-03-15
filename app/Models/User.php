@@ -50,15 +50,21 @@ class User extends Authenticatable
         ];
     }
 
-    // Relación con vehiculos
+    // Relación uno a muchos con Vehiculo
     public function vehiculos()
     {
         return $this->hasMany(Vehiculo::class);
     }
 
+    // Relación uno a muchos con Turno
+    public function turnos()
+    {
+        return $this->hasMany(Turno::class);
+    }
+
     // Método para representar el objeto como string
     public function __toString()
     {
-        return substr(sprintf('%s %s', $this->nombre, $this->apellido), 0, 15);
+        return sprintf('%s %s', $this->nombre, $this->apellido);
     }
 }

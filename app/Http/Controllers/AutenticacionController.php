@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use App\Helpers\RegexHelper;
+use App\Helpers\Helper;
 
 class AutenticacionController extends Controller
 {
@@ -20,12 +20,12 @@ class AutenticacionController extends Controller
     {
         // Validar los datos
         $req->validate([
-            'nombre' => 'required|max:50|regex:' . RegexHelper::TEXTO_SIMPLE,
-            'apellido' => 'required|max:50|regex:' . RegexHelper::TEXTO_SIMPLE,
-            'dni' => 'required|size:8|unique:users,dni|regex:' . RegexHelper::DNI,
-            'telefono' => 'nullable|max:12|regex:' . RegexHelper::TELEFONO,
+            'nombre' => 'required|max:50|regex:' . Helper::REGEX_TEXTO,
+            'apellido' => 'required|max:50|regex:' . Helper::REGEX_TEXTO,
+            'dni' => 'required|size:8|unique:users,dni|regex:' . Helper::REGEX_DNI,
+            'telefono' => 'nullable|max:12|regex:' . Helper::REGEX_TELEFONO,
             'correo' => 'required|email|max:150|unique:users,correo',
-            'password' => 'required|confirmed|min:6|max:8|regex:' . RegexHelper::PASSWORD,
+            'password' => 'required|confirmed|min:6|max:8|regex:' . Helper::REGEX_PASSWORD,
             'terminos' => 'accepted',
         ], [
             'nombre.required' => 'El nombre es obligatorio.',
@@ -81,7 +81,7 @@ class AutenticacionController extends Controller
     {
         // Validar los datos
         $req->validate([
-            'dni' => 'required|regex:' . RegexHelper::DNI,
+            'dni' => 'required|regex:' . Helper::REGEX_DNI,
             'password' => 'required',
         ], [
             'dni.required' => 'El DNI es obligatorio.',
