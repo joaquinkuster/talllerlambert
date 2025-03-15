@@ -53,7 +53,7 @@ class UsuarioController extends Controller
             'dni' => 'required|size:8|unique:users,dni,' . Auth::user()->id . '|regex:' . Helper::REGEX_DNI,  // Validar el DNI (debe tener 8 caracteres y ser único, excepto para el usuario actual).
             'telefono' => 'nullable|max:12|regex:' . Helper::REGEX_TELEFONO,  // El teléfono es opcional, pero si se proporciona, debe cumplir con el formato y tamaño.
             'correo' => 'required|email|max:150|unique:users,correo,' . Auth::user()->id,  // Validar el correo (debe ser único, excepto para el usuario actual).
-            'password' => 'nullable|confirmed|min:6|max:8|regex:' . Helper::REGEX_PASSWORD,  // Validar la contraseña si se proporciona.
+            'password' => ['nullable', 'confirmed', 'min:6', 'max:8', 'regex:' . Helper::REGEX_PASSWORD],  // Validar la contraseña si se proporciona.
         ], [
             // Mensajes personalizados de error para cada campo.
             'nombre.required' => 'El nombre es obligatorio.',

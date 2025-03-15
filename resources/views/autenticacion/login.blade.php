@@ -8,7 +8,7 @@
             <div class="formulario-izquierda w-50 px-5 d-flex flex-column">
                 <h2 class="text-center mb-4">Bienvenido</h2>
                 <h2 class="text-center mb-4">Iniciar sesión</h2>
-                <form action="{{ route('login.acceder') }}" method="post" class="w-100">
+                <form action="{{ route('login') }}" method="post" class="w-100">
                     @csrf
                     @error('login')
                         <div class="alert alert-danger" role="alert">

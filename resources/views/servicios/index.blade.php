@@ -50,7 +50,9 @@
                             <th class="text-center">Descripción</th>
                             <th class="text-center">Costo (en ARS)</th>
                             <th class="text-center">Duración (min)</th>
-                            <th class="text-center">Acciones</th>
+                            @if (auth()->user()->rol == 'Administrador')
+                                <th class="text-center">Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -60,16 +62,19 @@
                                 <td class="align-middle">{{ $servicio->descripcion }}</td>
                                 <td class="align-middle">${{ $servicio->costo }}</td>
                                 <td class="align-middle">{{ $servicio->duracion }}</td>
-                                <td class="align-middle">
-                                    <a href="{{ route('servicios.modificar', $servicio->id) }}"
-                                        class="btn btn-warning btn-sm">Modificar</a>
-                                    <form action="{{ route('servicios.eliminar', $servicio->id) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm btnConfirmar">Eliminar</button>
-                                    </form>
-                                </td>
+                                @if (auth()->user()->rol == 'Administrador')
+                                    <td class="align-middle">
+                                        <a href="{{ route('servicios.modificar', $servicio->id) }}"
+                                            class="btn btn-warning btn-sm">Modificar</a>
+                                        <form action="{{ route('servicios.eliminar', $servicio->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="btn btn-danger btn-sm btnConfirmar">Eliminar</button>
+                                        </form>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                         <!-- Más filas aquí -->
@@ -82,8 +87,10 @@
             </div>
         @endif
 
-        <div class="d-flex justify-content-end mt-3">
-            <a class="btn btn-dark px-5" href="{{ route('servicios.registrar') }}">Registrar servicio</a>
-        </div>
+        @if (auth()->user()->rol == 'Administrador')
+            <div class="d-flex justify-content-end mt-3">
+                <a class="btn btn-dark px-5" href="{{ route('servicios.registrar') }}">Registrar servicio</a>
+            </div>
+        @endif
     </div>
 @endsection

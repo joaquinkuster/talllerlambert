@@ -24,15 +24,17 @@ class TurnoController extends Controller
 
         $turnos = (Auth::user()->rol == 'Cliente')
             ? Auth::user()->turnos
-                ->sortByDesc('created_at') // Primero ordena por fecha más reciente
+                ->sortBy('fechaHora') // Primero ordena por fecha más reciente
                 ->sortBy(fn($turno) => $estadoPrioridad[$turno->estado] ?? 3) // Luego ordena por prioridad de estado
-            : Turno::orderBy('created_at', 'DESC')
+            : Turno::orderBy('fechaHora')
                 ->get()
                 ->sortBy(fn($turno) => $estadoPrioridad[$turno->estado] ?? 3);
 
         // Obtener los servicios y vehiculos para los filtros
         $servicios = Servicio::orderBy('created_at', 'DESC')->get();
-        $vehiculos = Vehiculo::orderBy('created_at', 'DESC')->get();
+        $vehiculos = (Auth::user()->rol == 'Cliente')
+            ? Auth::user()->vehiculos->sortByDesc('created_at')
+            : Vehiculo::orderBy('created_at', 'DESC')->get();
 
         // Crear un array y retornar la vista
         return view('turnos.index', compact('turnos', 'servicios', 'vehiculos'));
@@ -44,8 +46,9 @@ class TurnoController extends Controller
         if ($req->isMethod('get')) {
             // Obtener los servicios y vehiculos para los selects
             $servicios = Servicio::orderBy('created_at', 'DESC')->get();
-            $vehiculos = Vehiculo::orderBy('created_at', 'DESC')->get();
-
+            $vehiculos = (Auth::user()->rol == 'Cliente')
+                ? Auth::user()->vehiculos->sortByDesc('created_at')
+                : Vehiculo::orderBy('created_at', 'DESC')->get();
             return view('turnos.reservar', compact('servicios', 'vehiculos'));
         }
 
@@ -85,8 +88,10 @@ class TurnoController extends Controller
         if ($req->isMethod('get')) {
             // Obtener los servicios y vehiculos para los selects
             $servicios = Servicio::orderBy('created_at', 'DESC')->get();
-            $vehiculos = Vehiculo::orderBy('created_at', 'DESC')->get();
-
+            $vehiculos = (Auth::user()->rol == 'Cliente')
+                ? Auth::user()->vehiculos->sortByDesc('created_at')
+                : Vehiculo::orderBy('created_at', 'DESC')->get();
+                
             $servicioIds = $turno->servicios->pluck('id')->toArray();
             $horariosDisponibles = $this->calcularHorariosDisponibles($servicioIds, $turno->id);
 

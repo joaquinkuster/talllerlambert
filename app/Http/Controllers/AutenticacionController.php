@@ -2,32 +2,119 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-use App\Helpers\Helper;
+use Illuminate\Http\Request; 
+use Illuminate\Support\Facades\Hash; 
+use App\Models\User; 
+use Illuminate\Support\Facades\Auth; 
+use Illuminate\Validation\ValidationException; 
+use App\Helpers\Helper; 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
 
 class AutenticacionController extends Controller
 {
-    public function registro()
-    {
-        return view('autenticacion/registro');
-    }
 
+    /**
+     * Método para registrar un nuevo usuario.
+     *
+     * @param Request $req La solicitud HTTP que contiene los datos del usuario.
+     * @return RedirectResponse|View
+     */
     public function registrar(Request $req)
     {
-        // Validar los datos
+        // Si la solicitud es GET, mostrar la vista de registro
+        if ($req->isMethod('get')) {
+            return view('autenticacion/registro');
+        }
+
+        // Validar los datos del formulario de registro utilizando la función validarUsuario()
+        $datos = $this->validarUsuario($req);
+
+        // Encriptar la contraseña antes de guardar
+        $datos['password'] = Hash::make($req->password);
+
+        // Crear un nuevo usuario con los datos validados
+        User::create($datos);
+
+        // Redirigir a la página de login con un mensaje de éxito
+        return redirect()->route('login')->with('msj', 'Se creó la cuenta exitosamente.');
+    }
+
+    /**
+     * Método para autenticar al usuario en el sistema.
+     *
+     * @param Request $req La solicitud HTTP que contiene el DNI y la contraseña del usuario.
+     * @return RedirectResponse|View
+     */
+    public function acceder(Request $req)
+    {
+        // Si la solicitud es GET, mostrar la vista de login
+        if ($req->isMethod('get')) {
+            return view('autenticacion/login');
+        }
+
+        // Validar los datos de la solicitud (DNI y contraseña)
         $req->validate([
-            'nombre' => 'required|max:50|regex:' . Helper::REGEX_TEXTO,
-            'apellido' => 'required|max:50|regex:' . Helper::REGEX_TEXTO,
-            'dni' => 'required|size:8|unique:users,dni|regex:' . Helper::REGEX_DNI,
-            'telefono' => 'nullable|max:12|regex:' . Helper::REGEX_TELEFONO,
-            'correo' => 'required|email|max:150|unique:users,correo',
-            'password' => 'required|confirmed|min:6|max:8|regex:' . Helper::REGEX_PASSWORD,
-            'terminos' => 'accepted',
+            'dni' => 'required|regex:' . Helper::REGEX_DNI, // Validación para el DNI
+            'password' => 'required', // La contraseña es obligatoria
         ], [
+            'dni.required' => 'El DNI es obligatorio.',
+            'dni.regex' => 'El DNI debe tener 8 dígitos o empezar con M/F seguido de 7 dígitos.',
+            'password.required' => 'La contraseña es obligatoria.',
+        ]);
+
+        // Intentar autenticar al usuario con los datos proporcionados (DNI y contraseña)
+        if (!Auth::attempt($req->only('dni', 'password'), $req->boolean('recordar'))) {
+            // Si la autenticación falla, lanzar una excepción de validación
+            throw ValidationException::withMessages([
+                'login' => trans('auth.failed') // Mensaje de error si la autenticación falla
+            ]);
+        }
+
+        // Regenerar la sesión para mayor seguridad
+        $req->session()->regenerate();
+
+        // Redirigir al usuario al index de servicios con un mensaje de éxito
+        return redirect()->route('servicios')->with('msj', 'Se inició sesión exitosamente.');
+    }
+
+    /**
+     * Método para cerrar la sesión del usuario.
+     *
+     * @param Request $request La solicitud HTTP para cerrar sesión.
+     * @return RedirectResponse
+     */
+    public function logout(Request $request)
+    {
+        // Cerrar la sesión del usuario autenticado utilizando el guard web
+        Auth::guard('web')->logout();
+
+        // Invalidar la sesión actual para mayor seguridad
+        $request->session()->invalidate();
+
+        // Redirigir al usuario a la página de login con un mensaje de éxito
+        return redirect()->route('login')->with('msj', 'Se cerró la sesión exitosamente.');
+    }
+
+    /**
+     * Método para validar los datos del formulario de registro de un nuevo usuario.
+     *
+     * @param Request $req La solicitud HTTP que contiene los datos del formulario.
+     * @return array Los datos validados del usuario.
+     */
+    private function validarUsuario(Request $req)
+    {
+        // Validar los datos del formulario utilizando reglas definidas
+        return $req->validate([
+            'nombre' => 'required|max:50|regex:' . Helper::REGEX_TEXTO, // Nombre: obligatorio, máximo 50 caracteres, solo texto
+            'apellido' => 'required|max:50|regex:' . Helper::REGEX_TEXTO, // Apellido: obligatorio, máximo 50 caracteres, solo texto
+            'dni' => 'required|size:8|unique:users,dni|regex:' . Helper::REGEX_DNI, // DNI: obligatorio, tamaño 8, único, regex personalizado
+            'telefono' => 'nullable|max:12|regex:' . Helper::REGEX_TELEFONO, // Teléfono: opcional, máximo 12 caracteres, regex personalizado
+            'correo' => 'required|email|max:150|unique:users,correo', // Correo: obligatorio, formato email, único
+            'password' => ['required', 'confirmed', 'min:6', 'max:8', 'regex:' . Helper::REGEX_PASSWORD], // Contraseña: obligatoria, confirmada, entre 6 y 8 caracteres, regex personalizado
+            'terminos' => 'accepted', // Términos: debe ser aceptado
+        ], [
+            // Mensajes personalizados de validación para cada campo
             'nombre.required' => 'El nombre es obligatorio.',
             'nombre.max' => 'El nombre no puede superar los 50 caracteres.',
             'nombre.regex' => 'El nombre solo puede contener letras y un solo espacio entre palabras.',
@@ -57,63 +144,5 @@ class AutenticacionController extends Controller
 
             'terminos.accepted' => 'Debes aceptar los términos y condiciones.'
         ]);
-
-        // Crear el usuario con los datos validados
-        User::create([
-            'nombre' => $req->nombre,
-            'apellido' => $req->apellido,
-            'dni' => $req->dni,
-            'telefono' => $req->telefono,
-            'correo' => $req->correo,
-            'password' => Hash::make($req->password),
-        ]);
-
-        // Redirigir al login con un mensaje de éxito
-        return redirect()->route('login')->with('msj', 'Se creó la cuenta exitosamente.');
-    }
-
-    public function login()
-    {
-        return view('autenticacion/login');
-    }
-
-    public function acceder(Request $req)
-    {
-        // Validar los datos
-        $req->validate([
-            'dni' => 'required|regex:' . Helper::REGEX_DNI,
-            'password' => 'required',
-        ], [
-            'dni.required' => 'El DNI es obligatorio.',
-            'dni.regex' => 'El DNI debe tener 8 dígitos o empezar con M/F seguido de 7 dígitos.',
-            'password.required' => 'La contraseña es obligatoria.',
-        ]);
-
-        // Intentar autenticar
-        if (!Auth::attempt($req->only('dni', 'password'), $req->boolean('recordar'))) {
-            throw ValidationException::withMessages([
-                'login' => trans('auth.failed')
-            ]);
-        }
-
-        // Regenerar la sesión para mayor seguridad
-        $req->session()->regenerate();
-
-        // Redirigir al index de servicios
-        return redirect()->route('servicios')->with('msj', 'Se inició sesión exitosamente.');
-    }
-
-    public function logout(Request $request)
-    {
-        // Cerrar la sesión del usuario autenticado
-        // Especificar el guard que maneja la autenticación y almacena la información del usuario, 
-        // ya sea mediante sesiones (web) o tokens (API).
-        Auth::guard('web')->logout();
-  
-        // Invalida la sesión actual para seguridad
-        $request->session()->invalidate();
-  
-        // Redirigir al index de servicios
-        return redirect()->route('login')->with('msj', 'Se cerró la sesión exitosamente.');
     }
 }

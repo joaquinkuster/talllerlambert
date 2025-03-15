@@ -5,7 +5,7 @@
 @section('contenido')
     <div class="registro-container bg-white rounded shadow p-5 mx-auto">
         <h2 class="text-center mb-4">Registrar cuenta</h2>
-        <form action="{{ route('registro.registrar') }}" method="post">
+        <form action="{{ route('registro') }}" method="post">
             @csrf
 
             <div class="row mb-3">

@@ -15,16 +15,23 @@ Route::get('/', [ServicioController::class, 'index'])->name('servicios');
 // Rutas accesibles solo para usuarios no autenticados (guest)
 Route::middleware('guest')->group(function () {
     Route::controller(AutenticacionController::class)->group(function () {
-        Route::get('registro', 'registro')->name('registro');
-        Route::post('registro', 'registrar')->name('registro.registrar');
-        Route::get('login', 'login')->name('login');
-        Route::post('login', 'acceder')->name('login.acceder');
+        Route::get('registro', 'registrar')->name('registro');
+        Route::post('registro', 'registrar')->name('registro');
+        Route::get('login', 'acceder')->name('login');
+        Route::post('login', 'acceder')->name('login');
     });
 });
 
 // Rutas accesibles solo para usuarios autenticados (auth)
 Route::middleware('auth')->group(function () {
+    // Ruta para cerrar sesión
     Route::get('logout', [AutenticacionController::class, 'logout'])->name('logout');
+
+    // Rutas para modificar el perfil del usuario
+    Route::controller(UsuarioController::class)->prefix('perfil')->group(function () {
+        Route::get('', 'modificar')->name('modificar.perfil');
+        Route::put('', 'modificar')->name('modificar.perfil');
+    });
 
     // Rutas para manejar los turnos del usuario o usuarios
     Route::controller(TurnoController::class)->prefix('turnos')->group(function () {
@@ -35,12 +42,6 @@ Route::middleware('auth')->group(function () {
 
 // Rutas accesibles solo para usuarios autenticados y con rol de 'Cliente'
 Route::middleware(['auth', VerificarRolCliente::class])->group(function () {
-    // Rutas para modificar el perfil del cliente
-    Route::controller(UsuarioController::class)->prefix('perfil')->group(function () {
-        Route::get('', 'modificar')->name('modificar.perfil');
-        Route::put('', 'modificar')->name('modificar.perfil');
-    });
-
     // Rutas para gestionar los vehículos del cliente
     Route::controller(VehiculoController::class)->prefix('vehiculos')->group(function () {
         Route::get('', 'index')->name('vehiculos');

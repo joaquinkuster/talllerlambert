@@ -13,7 +13,7 @@ class Helper
     public const REGEX_TEXTO = '/^[a-zA-ZÁáÉéÍíÓóÚúÜü]+( [a-zA-ZÁáÉéÍíÓóÚúÜü]+)*$/'; // Solo letras y espacios
     public const REGEX_DNI = '/^[MF]?\d{7,8}$/'; // 7-8 dígitos o 'M/F' seguido de 7 dígitos
     public const REGEX_TELEFONO = '/^\d{8,12}$/'; // Entre 8 y 12 dígitos
-    public const REGEX_PASSWORD = '/^(?=.*[A-Za-z])(?=.*\d).{6,8}$/'; // 6-8 caracteres, al menos 1 letra y 1 número
+    public const REGEX_PASSWORD = '/^(?=.*[a-zA-Z])(?=(.*\d){5,})[A-Za-z0-9]{6,8}$/'; // al menos 5 números y 1 letra
     public const REGEX_PATENTE = '/^[A-Z]{3}\d{3}|[A-Z]{2}\d{3}[A-Z]{2}$/'; // Formato patente Argentina
 
     /**

@@ -5,68 +5,107 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
 
 class VehiculoController extends Controller
 {
+    /**
+     * Muestra todos los vehículos del usuario autenticado.
+     *
+     * @return View
+     */
     public function index()
     {
-        $vehiculos = Auth::user()->vehiculos; // Obtiene todos los vehículos del usuario autenticado
+        // Obtiene todos los vehículos asociados al usuario autenticado
+        $vehiculos = Auth::user()->vehiculos;
 
-        // Crear un array y retornar la vista
+        // Retorna la vista 'vehiculos.index' con la lista de vehículos
         return view('vehiculos.index', compact('vehiculos'));
     }
 
+    /**
+     * Registra un nuevo vehículo para el usuario autenticado.
+     *
+     * @param Request $req La solicitud HTTP.
+     * @return RedirectResponse|View
+     */
     public function registrar(Request $req)
     {
-        // Si la solicitud es get, retornar vista
+        // Si la solicitud es GET, retornar la vista de registro
         if ($req->isMethod('get')) {
             return view('vehiculos.registrar');
         }
 
-        // Validar los datos
+        // Validar los datos del vehículo utilizando el método privado
         $datos = $this->validarVehiculo($req);
 
-        // Crear el vehículo asociado al usuario autenticado
+        // Crear un nuevo vehículo asociado al usuario autenticado
         Auth::user()->vehiculos()->create($datos);
 
-        // Redirigir al index con un mensaje de éxito
+        // Redirige al índice de vehículos con un mensaje de éxito
         return redirect()->route('vehiculos')->with('msj', 'Se creó el vehículo exitosamente.');
     }
 
+    /**
+     * Modifica los datos de un vehículo existente.
+     *
+     * @param Request $req La solicitud HTTP.
+     * @param string $id El ID del vehículo a modificar.
+     * @return RedirectResponse|View
+     */
     public function modificar(Request $req, string $id)
     {
-        // Buscar el vehículo por el id proporcionado
+        // Buscar el vehículo con el ID proporcionado
         $vehiculo = Auth::user()->vehiculos()->findOrFail($id);
 
-        // Si la solicitud es get, retornar vista
+        // Si la solicitud es GET, retornar la vista de modificación con los datos del vehículo
         if ($req->isMethod('get')) {
             return view('vehiculos.modificar', compact('vehiculo'));
         }
 
-        // Validar los datos
+        // Validar los datos del vehículo utilizando el método privado
         $datos = $this->validarVehiculo($req);
 
         // Actualizar el vehículo con los datos validados
         $vehiculo->update($datos);
 
-        // Redirigir al index con un mensaje de éxito
+        // Redirigir al índice de vehículos con un mensaje de éxito
         return redirect()->route('vehiculos')->with('msj', 'Se modificó el vehículo exitosamente.');
     }
 
+    /**
+     * Elimina un vehículo del usuario autenticado.
+     *
+     * @param string $id El ID del vehículo a eliminar.
+     * @return RedirectResponse
+     */
     public function eliminar(string $id)
     {
-        // Buscar el vehículo por el id proporcionado
+        // Buscar el vehículo con el ID proporcionado
         $vehiculo = Auth::user()->vehiculos()->findOrFail($id);
 
-        // Actualizar el vehículo con los datos validados
+        // Verificar que no esté relacionado con otros registros
+        if ($vehiculo->turnos()->count() > 0) {
+            return redirect()->route('vehiculos')->with('error', 'No se puede eliminar el vehículo porque está relacionado con otros turnos.');
+        }
+
+        // Eliminar el vehículo
         $vehiculo->delete();
 
-        // Redirigir al index con un mensaje de éxito
+        // Redirigir al índice de vehículos con un mensaje de éxito
         return redirect()->route('vehiculos')->with('msj', 'Se eliminó el vehículo exitosamente.');
     }
 
+    /**
+     * Valida los datos del vehículo recibidos en la solicitud.
+     *
+     * @param Request $req La solicitud HTTP.
+     * @return array Los datos validados.
+     */
     private function validarVehiculo(Request $req)
     {
+        // Validación de los campos del vehículo con reglas específicas
         return $req->validate([
             'marca' => 'required|string|max:50|regex:' . Helper::REGEX_TEXTO,
             'modelo' => 'required|string|max:50',
@@ -74,6 +113,7 @@ class VehiculoController extends Controller
             'anio' => 'required|integer|min:1900|max:' . date('Y'),
             'tipo' => 'required|in:Auto,Moto',
         ], [
+            // Mensajes personalizados para las reglas de validación
             'marca.required' => 'La marca del vehículo es obligatoria.',
             'marca.string' => 'La marca debe ser una cadena de texto.',
             'marca.max' => 'La marca no puede tener más de 50 caracteres.',

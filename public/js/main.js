@@ -47,28 +47,31 @@ $(document).ready(function () {
     }
 
     // Configuración de la acción de eliminar con confirmación
-    $(".btnConfirmar").each(function () {
-        const btn = $(this);
-        const form = btn.closest("form"); // Busca el formulario más cercano
-
-        btn.on("click", function (e) {
-            e.preventDefault();
-            Swal.fire({
-                title: "¿Estás seguro?",
-                text: "Esta acción no se puede deshacer.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Sí, eliminar",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit(); // Envía el formulario si el usuario confirma
-                }
+    const btnConfirmar = $(".btnConfirmar");
+    if (btnConfirmar.length){
+        btnConfirmar.each(function () {
+            const btn = $(this);
+            const form = btn.closest("form"); // Busca el formulario más cercano
+    
+            btn.on("click", function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "Esta acción no se puede deshacer.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Envía el formulario si el usuario confirma
+                    }
+                });
             });
         });
-    });
+    }
 
     // Funciones necesarias para la reserva y modificación de turnos
     const selectServicios = $('#selectMultiple');

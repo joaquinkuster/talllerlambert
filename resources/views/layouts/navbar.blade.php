@@ -8,7 +8,8 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto me-3">
                 <li class="nav-item me-3">
-                    <a class="nav-link  {{ request()->routeIs('servicios') ? 'active' : '' }}" href="{{ route('servicios') }}">Servicios</a>
+                    <a class="nav-link  {{ request()->routeIs('servicios') ? 'active' : '' }}"
+                        href="{{ route('servicios') }}">Servicios</a>
                 </li>
                 <li class="nav-item me-3">
                     <a class="nav-link" href="#">Nosotros</a>
@@ -36,31 +37,41 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item {{ request()->routeIs('vehiculos') ? 'active' : '' }}" href="{{ route('vehiculos') }}">Mis vehiculos</a></li>
-                            <li><a class="dropdown-item {{ request()->routeIs('turnos') ? 'active' : '' }}" href="{{ route('turnos') }}">Ver turnos</a></li>
-                            <li><a class="dropdown-item {{ request()->routeIs('modificar.perfil') ? 'active' : '' }}" href="{{ route('modificar.perfil') }}">Modificar perfil</a></li>
+                            @if (auth()->user()->rol == 'Cliente')
+                                <li><a class="dropdown-item {{ request()->routeIs('vehiculos') ? 'active' : '' }}"
+                                        href="{{ route('vehiculos') }}">Mis vehiculos</a></li>
+                            @endif
+                            <li><a class="dropdown-item {{ request()->routeIs('turnos') ? 'active' : '' }}"
+                                    href="{{ route('turnos') }}">Ver turnos</a></li>
+                            <li><a class="dropdown-item {{ request()->routeIs('modificar.perfil') ? 'active' : '' }}"
+                                    href="{{ route('modificar.perfil') }}">Modificar perfil</a></li>
                             <li><a class="dropdown-item btnLogout" pag-redirect="/logout">Cerrar sesión</a></li>
                         </ul>
                     </li>
                     <!-- Links para el menu responsive -->
                     <li class="nav-item vehiculos d-none me-3">
-                        <a class="nav-link {{ request()->routeIs('vehiculos') ? 'active' : '' }}" href="{{ route('vehiculos') }}">Mis vehiculos</a>
+                        <a class="nav-link {{ request()->routeIs('vehiculos') ? 'active' : '' }}"
+                            href="{{ route('vehiculos') }}">Mis vehiculos</a>
                     </li>
                     <li class="nav-item turnos d-none me-3">
-                        <a class="nav-link {{ request()->routeIs(patterns: 'turnos') ? 'active' : '' }}" href="{{ route('turnos') }}">Ver turnos</a>
+                        <a class="nav-link {{ request()->routeIs(patterns: 'turnos') ? 'active' : '' }}"
+                            href="{{ route('turnos') }}">Ver turnos</a>
                     </li>
                     <li class="nav-item perfil d-none me-3">
-                        <a class="nav-link {{ request()->routeIs(patterns: 'modificar.perfil') ? 'active' : '' }}" href="{{ route('modificar.perfil') }}">Modificar perfil</a>
+                        <a class="nav-link {{ request()->routeIs(patterns: 'modificar.perfil') ? 'active' : '' }}"
+                            href="{{ route('modificar.perfil') }}">Modificar perfil</a>
                     </li>
                     <li class="nav-item logout d-none me-3">
                         <a class="nav-link btnLogout" pag-redirect="/logout">Cerrar sesión</a>
                     </li>
                 @else
                     <li class="nav-item me-3">
-                        <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}">Iniciar sesión</a>
+                        <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}"
+                            href="{{ route('login') }}">Iniciar sesión</a>
                     </li>
                     <li class="nav-item me-3">
-                        <a class="nav-link {{ request()->routeIs('registro') ? 'active' : '' }}" href="{{ route('registro') }}">Registrarse</a>
+                        <a class="nav-link {{ request()->routeIs('registro') ? 'active' : '' }}"
+                            href="{{ route('registro') }}">Registrarse</a>
                     </li>
                 @endif
             </ul>
