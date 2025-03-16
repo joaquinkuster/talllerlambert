@@ -72,32 +72,21 @@
                     </div>
                 @enderror
             </div>
+            <button type="submit" class="btn btn-dark w-100">Modificar</button>
+        </form>
+
+        <!-- Formulario para enviar el correo de restablecimiento -->
+        <h3 class="text-center mt-5">Restablecer Contraseña</h3>
+        <form action="{{ route('perfil.solicitarRestablecerCorreo') }}" method="POST">
+            @csrf
             <div class="mb-3">
-                <label for="contrasena" class="form-label">Contraseña:</label>
-                <div class="input-group @error('password') is-invalid @enderror">
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                        name="password" placeholder="Contraseña">
-                    <span class="input-group-text">
-                        <i class="fas fa-eye-slash" id="togglePassword"></i>
-                    </span>
-                </div>
-                @error('password')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
+                <label for="correo" class="form-label">Correo Electrónico</label>
+                <input type="email" name="correo" id="correo" class="form-control @error('correo') is-invalid @enderror" required>
+                @error('correo')
+                <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Repetir Contraseña:</label>
-                <div class="input-group">
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                        placeholder="Repetir Contraseña">
-                    <span class="input-group-text">
-                        <i class="fas fa-eye-slash" id="togglePasswordConfirm"></i>
-                    </span>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-dark w-100">Modificar</button>
+            <button type="submit" class="btn btn-dark w-100">Enviar correo de restablecimiento</button>
         </form>
     </div>
 @endsection
