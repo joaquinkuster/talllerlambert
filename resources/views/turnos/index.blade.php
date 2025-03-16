@@ -96,24 +96,27 @@
                                 <td class="align-middle">{{ $turno->fechaHora->format('Y-m-d H:i') }}</td>
                                 <td class="align-middle">{{ $turno->estado }}</td>
                                 <td class="align-middle">
-                                    @if (auth()->user()->rol == 'Cliente')
-                                        <a href="{{ route('turnos.modificar', $turno->id) }}"
-                                            class="btn btn-warning btn-sm">Modificar</a>
-                                    @endif
-                                    <form action="{{ route('turnos.cancelar', $turno->id) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm btnConfirmar">Cancelar</button>
-                                    </form>
-                                    @if (auth()->user()->rol == 'Administrador')
-                                        <form action="{{ route('turnos.finalizar', $turno->id) }}" method="POST"
+                                    @if ($turno->estado == 'Pendiente')
+                                        @if (auth()->user()->rol == 'Cliente')
+                                            <a href="{{ route('turnos.modificar', $turno->id) }}"
+                                                class="btn btn-warning btn-sm">Modificar</a>
+                                        @endif
+                                        <form action="{{ route('turnos.cancelar', $turno->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf
-                                            @method('PUT')
+                                            @method('DELETE')
                                             <button type="submit"
-                                                class="btn btn-primary btn-sm btnConfirmar">Finalizar</button>
+                                                class="btn btn-danger btn-sm btnConfirmar">Cancelar</button>
                                         </form>
+                                        @if (auth()->user()->rol == 'Administrador')
+                                            <form action="{{ route('turnos.finalizar', $turno->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-sm btnConfirmar">Finalizar</button>
+                                            </form>
+                                        @endif
                                     @endif
                                 </td>
                             </tr>
