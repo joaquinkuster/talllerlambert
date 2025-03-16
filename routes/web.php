@@ -8,6 +8,8 @@ use App\Http\Controllers\AutenticacionController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\TurnoController;
 use App\Http\Controllers\VehiculoController;
+use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\ResetPasswordController;
 
 // Ruta para mostrar la lista de servicios (accesible desde la página principal)
 Route::get('/', [ServicioController::class, 'index'])->name('servicios');
@@ -76,3 +78,26 @@ Route::middleware(['auth', VerificarRolAdministrador::class])->group(function ()
     // Ruta para finalizar un turno (solo para administradores)
     Route::put('finalizar/{id}', [TurnoController::class, 'finalizar'])->name('turnos.finalizar');
 });
+
+// Ruta GET para mostrar el formulario de solicitud de restablecimiento de correo en el perfil
+Route::get('/perfil/solicitar-restablecer-correo', [UsuarioController::class, 'solicitarRestablecerCorreo'])
+    ->name('perfil.solicitarRestablecerCorreo');
+
+// Ruta POST para procesar la solicitud de restablecimiento de correo en el perfil
+Route::post('/perfil/solicitar-restablecer-correo', [PerfilController::class, 'solicitarRestablecerCorreo'])
+    ->name('perfil.solicitarRestablecerCorreo');
+
+// Ruta GET para mostrar el formulario de restablecimiento de contraseña usando el token
+Route::get('restablecer-contraseña/{token}', [ResetPasswordController::class, 'showResetForm'])
+    ->name('password.reset');
+
+// Ruta POST para actualizar la contraseña una vez validado el token
+Route::post('restablecer-contraseña', [ResetPasswordController::class, 'reset'])
+    ->name('password.update');
+
+// Ruta GET para mostrar los servicios en la página de servicios
+Route::get('/servicios', [ServicioController::class, 'index'])
+    ->name('servicios.index');
+
+
+
